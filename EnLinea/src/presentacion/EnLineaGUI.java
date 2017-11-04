@@ -1,9 +1,7 @@
 package presentacion;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class EnLineaGUI extends JFrame{
@@ -16,6 +14,11 @@ public class EnLineaGUI extends JFrame{
 
 	public static void main(String[] args){
 		EnLineaGUI ventana = new EnLineaGUI();
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("Menu");
+		menu.add("Nuevo");menu.add("Abrir");menu.add("Salvar");menu.add("Salvar Como");menu.add("Salir");
+		ventana.setJMenuBar(menuBar);
+		menuBar.add(menu);
 		ventana.setVisible(true);
 		ventana.addWindowListener(new WindowAdapter(){public void windowClosing(WindowEvent evt){ exitAccion();}});
 	}
@@ -37,7 +40,7 @@ public class EnLineaGUI extends JFrame{
 		setLocation(x,y);
 	}
 
-	private static  void exitAccion(){
+	private static void exitAccion(){
 		if (JOptionPane.showConfirmDialog(null,"Esta seguro que desea salir? ", "Salir del sistema",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 			System.exit(0);
 	}

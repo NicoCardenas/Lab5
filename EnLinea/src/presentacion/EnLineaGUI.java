@@ -44,4 +44,5 @@ public class EnLineaGUI extends JFrame{
 		if (JOptionPane.showConfirmDialog(null,"Esta seguro que desea salir? ", "Salir del sistema",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 			System.exit(0);
 	}
+	}
 }

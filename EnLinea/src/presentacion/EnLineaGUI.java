@@ -14,11 +14,7 @@ public class EnLineaGUI extends JFrame{
 
 	public static void main(String[] args){
 		EnLineaGUI ventana = new EnLineaGUI();
-		JMenuBar menuBar = new JMenuBar();
-		JMenu menu = new JMenu("Menu");
-		menu.add("Nuevo");menu.add("Abrir");menu.add("Salvar");menu.add("Salvar Como");menu.add("Salir");
-		ventana.setJMenuBar(menuBar);
-		menuBar.add(menu);
+		agregarMenu(ventana);
 		ventana.setVisible(true);
 		ventana.addWindowListener(new WindowAdapter(){public void windowClosing(WindowEvent evt){ exitAccion();}});
 	}
@@ -44,5 +40,15 @@ public class EnLineaGUI extends JFrame{
 		if (JOptionPane.showConfirmDialog(null,"Esta seguro que desea salir? ", "Salir del sistema",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 			System.exit(0);
 	}
+
+	private static void agregarMenu(EnLineaGUI ventana){
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menu = new JMenu("Menu");
+		String[] lista = {"Nuevo","Abrir","Salvar","Salvar Como","Salir"};
+		for (String i : lista){
+			menu.add(i);
+		}
+		ventana.setJMenuBar(menuBar);
+		menuBar.add(menu);
 	}
 }

@@ -1,20 +1,31 @@
 package aplicacion;
 
+import java.awt.*;
+
 public class Fichas{
 
 	int numJugador;
 	Color color;
-	int tamaño;
 
 	public Fichas(){
 		this.numJugador = 0;
 		this.color = Color.gray;
-		this.tamaño = 30;
 	}
 	
-	public Fichas(int numJugador, Color color, int tamaño){
+	public Fichas(int numJugador, Color color){
 		this.numJugador = numJugador;
 		this.color = color;
-		this.tamaño = tamaño;
+	}
+
+	public int getNumJugador(){
+		return numJugador;
+	}
+
+	public Color getColor(){
+		return color;
+	}
+
+	public void setColor(Color color){
+		this.color = color;
 	}
 }

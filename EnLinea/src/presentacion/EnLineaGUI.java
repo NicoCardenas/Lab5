@@ -4,11 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+import aplicacion.*;
 
 public class EnLineaGUI extends JFrame{
 
-	// Ventana principal
+	// Ventanas
 	private static EnLineaGUI ventana;
+	private static Configuracion ventanaConfiguracion;
 	//Layout
 	JPanel tituloLayout = new JPanel(new FlowLayout());
 	JPanel centroLayout = new JPanel(new GridLayout(10,10));
@@ -16,6 +18,7 @@ public class EnLineaGUI extends JFrame{
 	//Elementos del submenu
 	private JMenuItem nuevo = new JMenuItem("Nuevo");
 	private JMenuItem abrir = new JMenuItem("Abrir");
+	private JMenuItem configuracion = new JMenuItem("configuracion");
 	private JMenuItem salvar = new JMenuItem("Salvar");	
 	private JMenuItem salvar_como = new JMenuItem("Salvar como");
 	private JMenuItem salir = new JMenuItem("Salir");
@@ -35,6 +38,8 @@ public class EnLineaGUI extends JFrame{
 	private JColorChooser ventanaColor = new JColorChooser();
 	private Color color1 = Color.green;
 	private Color color2 = Color.blue;
+	//Elemento logico
+	private EnLinea logica = new EnLinea();
 
 	// Constructor
 	private EnLineaGUI(){
@@ -55,39 +60,32 @@ public class EnLineaGUI extends JFrame{
 		setSize(500, 500);
 		setResizable(false);
 		setLayout(new BorderLayout());
-		this.add(tituloLayout,BorderLayout.NORTH);
-		this.add(centroLayout,BorderLayout.CENTER);
-		this.add(botones,BorderLayout.SOUTH);
+		add(tituloLayout,BorderLayout.NORTH);
+		add(centroLayout,BorderLayout.CENTER);
+		add(botones,BorderLayout.SOUTH);
 		centre();
-		this.setJMenuBar(menuBar);
-		//Agregar botones a la ventana
-		colorJugador1.setBounds(90,400,120,30);
-		colorJugador2.setBounds(270,400,120,30);
-		colorJugador1.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				color1 = ventanaColor.showDialog(null, "Seleccione un Color", Color.gray);
-				refresque();
-			}
-		});
-		colorJugador2.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				color2 = ventanaColor.showDialog(null, "Seleccione un Color", Color.gray);
-				refresque();
-			}
-		});
-		botones.add(colorJugador1,BorderLayout.WEST);
-		botones.add(colorJugador2,BorderLayout.EAST);
-		//Adicion de los JMenuItem a JMenu
+		setJMenuBar(menuBar);
+		//inicializacion de la ventana de configuracion
+		ventanaConfiguracion = new Configuracion(this);
 		menu.add(nuevo);
-		menu.add(abrir);		
+		menu.add(abrir);
+		menu.add(configuracion);
 		menu.add(salvar);
 		menu.add(salvar_como);
 		menu.add(salir);
 		menuBar.add(menu); // Adicion del JMenu al JMenuBar
 		//Oyntes de los botones del menuBar
+		nuevo.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				reiniciar();
+			}});
 		abrir.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				juego.showOpenDialog(null);
+			}});
+		configuracion.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				ventanaConfiguracion.setVisible(true);
 			}});
 		salvar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -102,21 +100,26 @@ public class EnLineaGUI extends JFrame{
 	private void prepareElementosTablero(){
 		titulo.setText("4 En Linea");
 		titulo.setFont(new Font("Bradley Hand ITC",Font.BOLD,32));
-		//titulo.setBounds(155,30,180,32);
 		tituloLayout.add(titulo);
 		for (int i = 0; i < tablero.length; i++){
 			for (int j = 0; j < tablero[0].length; j++) {
 				tablero[i][j] = new JButton();
-				//tablero[i][j].setBounds(30*(i+3), 30*(j+3), 30, 30);
-				tablero[i][j].setEnabled(false);
+				tablero[i][j].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						//logica.setMovimiento( 0, 0,logica.getTurno());
+						logica.ganador();
+						setEnabled(false);
+					}});
 				centroLayout.add(tablero[i][j]);
 			}
 		}
 	}
 
-	private void refresque(){
+	public void refresque(){
 		for (int i = 0; i < tablero.length; i++){
 			for (int j = 0; j < tablero[0].length; j++) {
+				color1 = ventanaConfiguracion.getColor1();
+				color2 = ventanaConfiguracion.getColor2();
 				demo();
 				tablero[i][j].setVisible(false);
 				tablero[i][j].setVisible(true);
@@ -148,7 +151,18 @@ public class EnLineaGUI extends JFrame{
 					tablero[i][j].setBackground(color1);
 				else
 					tablero[i][j].setBackground(color2);
+				tablero[i][j].setEnabled(false);
 			}
 		}
+	}
+
+	private void reiniciar(){
+		for (int i = 0; i < tablero.length; i++){
+			for (int j = 0; j < tablero[0].length; j++){
+				tablero[i][j].setVisible(false);
+				centroLayout.remove(tablero[i][j]);
+			}
+		}
+		prepareElementosTablero();
 	}
 }

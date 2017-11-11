@@ -9,6 +9,10 @@ public class EnLineaGUI extends JFrame{
 
 	// Ventana principal
 	private static EnLineaGUI ventana;
+	//Layout
+	JPanel tituloLayout = new JPanel(new FlowLayout());
+	JPanel centroLayout = new JPanel(new GridLayout(10,10));
+	JPanel botones = new JPanel(new BorderLayout());
 	//Elementos del submenu
 	private JMenuItem nuevo = new JMenuItem("Nuevo");
 	private JMenuItem abrir = new JMenuItem("Abrir");
@@ -50,7 +54,10 @@ public class EnLineaGUI extends JFrame{
 		setTitle("EnLinea");
 		setSize(500, 500);
 		setResizable(false);
-		setLayout(null);
+		setLayout(new BorderLayout());
+		this.add(tituloLayout,BorderLayout.NORTH);
+		this.add(centroLayout,BorderLayout.CENTER);
+		this.add(botones,BorderLayout.SOUTH);
 		centre();
 		this.setJMenuBar(menuBar);
 		//Agregar botones a la ventana
@@ -68,8 +75,8 @@ public class EnLineaGUI extends JFrame{
 				refresque();
 			}
 		});
-		add(colorJugador1);
-		add(colorJugador2);
+		botones.add(colorJugador1,BorderLayout.WEST);
+		botones.add(colorJugador2,BorderLayout.EAST);
 		//Adicion de los JMenuItem a JMenu
 		menu.add(nuevo);
 		menu.add(abrir);		
@@ -95,14 +102,14 @@ public class EnLineaGUI extends JFrame{
 	private void prepareElementosTablero(){
 		titulo.setText("4 En Linea");
 		titulo.setFont(new Font("Bradley Hand ITC",Font.BOLD,32));
-		titulo.setBounds(155,30,180,32);
-		this.add(titulo);
+		//titulo.setBounds(155,30,180,32);
+		tituloLayout.add(titulo);
 		for (int i = 0; i < tablero.length; i++){
 			for (int j = 0; j < tablero[0].length; j++) {
 				tablero[i][j] = new JButton();
-				tablero[i][j].setBounds(30*(i+3), 30*(j+3), 30, 30);
+				//tablero[i][j].setBounds(30*(i+3), 30*(j+3), 30, 30);
 				tablero[i][j].setEnabled(false);
-				this.add(tablero[i][j]);
+				centroLayout.add(tablero[i][j]);
 			}
 		}
 	}
@@ -135,8 +142,8 @@ public class EnLineaGUI extends JFrame{
 	}
 
 	private void demo(){
-		for (int i = 0; i < tablero.length; i++){
-			for (int j = 3; j < tablero[0].length; j++) {
+		for (int i = 3; i < tablero.length; i++){
+			for (int j = 0; j < tablero[0].length; j++) {
 				if (random.nextInt()%2 == 0)
 					tablero[i][j].setBackground(color1);
 				else
